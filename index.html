@@ -1,85 +1,89 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex"><link rel="icon" href="data:,">
-<title>배경화면 저장</title>
+<title>깜자 배경화면</title>
 <style>
-:root{--bg:#0c0c0f;--ink:#fff;--sub:#a7a7b0;--acc:#ff4d6d;--line:#26262e}
+:root{--bg:#0c0c0f;--ink:#fff;--sub:#a7a7b0;--acc:#ffb400;--card:#17171c;--line:#26262e}
 *{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",system-ui,sans-serif;display:flex;flex-direction:column;min-height:100%}
-.wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px 18px calc(22px + env(safe-area-inset-bottom));gap:16px;text-align:center}
-.shot{position:relative;max-width:min(80vw,240px);max-height:54vh;border-radius:22px;overflow:hidden;background:#17171c;box-shadow:0 12px 40px rgba(0,0,0,.5);border:1px solid var(--line)}
-.shot img{display:block;width:auto;height:auto;max-width:100%;max-height:54vh;-webkit-touch-callout:default}
-.shot .ph{width:min(80vw,240px);aspect-ratio:9/19.5;max-height:54vh;display:flex;align-items:center;justify-content:center;color:#55555f;font-size:13px}
-h1{font-size:19px;margin:2px 0 0;letter-spacing:-.02em}
-p{color:var(--sub);font-size:14px;margin:0;line-height:1.55;max-width:320px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:340px;min-height:54px;border-radius:15px;background:#fff;color:#111;font-weight:800;font-size:16px;text-decoration:none;border:0;cursor:pointer}
-.btn svg{width:19px;height:19px}
-.tip{display:flex;align-items:center;gap:8px;background:#17171c;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13.5px;color:var(--sub);max-width:340px;text-align:left;line-height:1.5}
-.tip b{color:var(--ink);font-weight:700}
-.hand{font-size:20px;flex:none}
-[hidden]{display:none!important}
-.done{font-size:13px;color:var(--acc);font-weight:700;min-height:18px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",system-ui,sans-serif}
+.wrap{max-width:460px;margin:0 auto;padding:22px 16px calc(28px + env(safe-area-inset-bottom))}
+.hd{text-align:center;margin-bottom:18px}
+.hd .k{font-size:11.5px;font-weight:800;letter-spacing:.16em;color:var(--acc);text-transform:uppercase}
+.hd h1{font-size:22px;margin:5px 0 6px;letter-spacing:-.02em}
+.hd p{color:var(--sub);font-size:13.5px;margin:0;line-height:1.5}
+.ios-tip{display:none;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 16px;font-size:13.5px;color:var(--sub);line-height:1.5}
+.ios-tip b{color:var(--ink);font-weight:700}
+.ios-tip .h{font-size:20px;flex:none}
+body.ios .ios-tip{display:flex}
+.list{display:flex;flex-direction:column;gap:20px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.item .imgwrap{position:relative;background:#000;display:flex;align-items:center;justify-content:center}
+.item img{display:block;width:100%;height:auto;-webkit-touch-callout:default}
+.item .cap{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}
+.item .nm{font-size:14.5px;font-weight:700}
+.item .nm small{display:block;color:var(--sub);font-weight:500;font-size:12px;margin-top:2px}
+.save{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 18px;border-radius:12px;background:#fff;color:#111;font-weight:800;font-size:14.5px;text-decoration:none;border:0;cursor:pointer;flex:none}
+.save svg{width:17px;height:17px}
+body.ios .save{display:none}
+body.ios .cap{justify-content:flex-start}
+.done{font-size:12px;color:var(--acc);font-weight:700;text-align:center;padding:0 14px 12px;min-height:0}
+.done:empty{padding:0}
+.foot{text-align:center;color:#55555f;font-size:11px;margin-top:24px}
 </style></head><body>
 <div class="wrap">
-  <div class="shot">
-    <img id="img" alt="배경화면" hidden>
-    <div class="ph" id="ph">이미지를 불러오는 중…</div>
+  <div class="hd">
+    <div class="k">GGAMJA · 깜자 휴게소</div>
+    <h1>배경화면 저장</h1>
+    <p id="lead">마음에 드는 배경화면을 저장하세요.</p>
   </div>
-  <h1 id="title">배경화면 저장</h1>
-
-  <!-- Android / PC -->
-  <div id="android" hidden style="display:contents">
-    <p>아래 버튼을 누르면 배경화면 이미지가 저장됩니다.</p>
-    <a class="btn" id="dl" download>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
-      배경화면 저장
-    </a>
-    <div class="done" id="done"></div>
-  </div>
-
-  <!-- iOS -->
-  <div id="ios" hidden style="display:contents">
-    <div class="tip"><span class="hand">👆</span><span>위 이미지를 <b>길게 누른 뒤</b> <b>‘사진에 저장’</b>을 선택하세요.<br>아이폰은 이 방법으로만 저장할 수 있어요.</span></div>
-  </div>
+  <div class="ios-tip"><span class="h">👆</span><span>이미지를 <b>길게 누른 뒤</b> <b>‘사진에 저장’</b>을 선택하세요.</span></div>
+  <div class="list" id="list"></div>
+  <div class="foot">©IT’S YOUR PRIMETIME</div>
 </div>
 <script>
 (function(){
-  // 배경화면 이미지 경로/파일명 — 이미지 교체 시 이 두 줄만 수정
-  var IMG = 'images/wallpaper.jpg';
-  var FILENAME = 'SLBS-wallpaper.jpg';
+  // 배경화면 목록 — 추가/교체 시 이 배열만 수정
+  var WALLPAPERS = [
+    { id: '1', file: 'images/wallpaper-1.webp', name: '깜자 휴게소', desc: '따끈따끈 호떡' },
+    { id: '2', file: 'images/wallpaper-2.webp', name: '깜자 휴게소 (와이드)', desc: '전체 부스' },
+    { id: '3', file: 'images/wallpaper-3.webp', name: '깜자 얼굴', desc: '심플 미니멀' }
+  ];
+  var FILEBASE = 'GGAMJA-wallpaper';
 
-  // ── 집계: 접속(tag)/다운로드(download)를 Supabase에 기록 (라이브러리 없이 REST 호출) ──
+  // 집계
   var SB_URL = 'https://lcdpaoiideovebozldjw.supabase.co';
   var SB_KEY = 'sb_publishable_plKi5-wE7NJ1uqdVRwmMag_GOJF-e56';
-  var SRC = (new URLSearchParams(location.search).get('src') || '').slice(0, 40); // ?src=카드이름 으로 카드 구분
-  function track(kind){
+  var SRC = (new URLSearchParams(location.search).get('src') || '').slice(0, 40);
+  function track(kind, img){
     try {
       fetch(SB_URL + '/rest/v1/ggamja_hits', {
         method: 'POST', keepalive: true,
         headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ kind: kind, src: SRC, ua: (navigator.userAgent || '').slice(0, 300) })
+        body: JSON.stringify({ kind: kind, src: SRC, img: img || '', ua: (navigator.userAgent || '').slice(0, 300) })
       }).catch(function(){});
     } catch(e){}
   }
-  track('tag'); // 페이지 열림 = 태그 1회
 
   var ua = navigator.userAgent || '';
   var isIOS = /iPhone|iPod|iPad/.test(ua) || (/Macintosh/.test(ua) && (navigator.maxTouchPoints||0) > 1);
-  var img = document.getElementById('img'), ph = document.getElementById('ph');
+  if (isIOS) { document.body.classList.add('ios'); document.getElementById('lead').textContent = '이미지를 길게 눌러 사진에 저장하세요.'; }
 
-  img.onload = function(){ img.hidden = false; ph.hidden = true; };
-  img.onerror = function(){ ph.textContent = '이미지를 찾을 수 없습니다 (' + IMG + ')'; };
-  img.src = IMG;
+  var ext = function(f){ var m = f.match(/\.(\w+)$/); return m ? m[1] : 'jpg'; };
+  var list = document.getElementById('list');
+  WALLPAPERS.forEach(function(w){
+    var item = document.createElement('div'); item.className = 'item';
+    var fname = FILEBASE + '-' + w.id + '.' + ext(w.file);
+    item.innerHTML =
+      '<div class="imgwrap"><img loading="lazy" alt="' + w.name + '" src="' + w.file + '"></div>' +
+      '<div class="cap"><div class="nm">' + w.name + (w.desc ? '<small>' + w.desc + '</small>' : '') + '</div>' +
+      '<a class="save" href="' + w.file + '" download="' + fname + '">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>저장</a>' +
+      '</div><div class="done"></div>';
+    var a = item.querySelector('.save'), done = item.querySelector('.done');
+    a.addEventListener('click', function(){ track('download', w.id); done.textContent = '저장했어요 · 갤러리를 확인하세요'; });
+    list.appendChild(item);
+  });
 
-  if (isIOS) {
-    document.getElementById('ios').hidden = false;
-    document.getElementById('title').textContent = '배경화면 저장';
-  } else {
-    document.getElementById('android').hidden = false;
-    var a = document.getElementById('dl');
-    a.href = IMG; a.setAttribute('download', FILENAME);
-    // 버튼을 눌렀을 때만 저장(자동 저장 안 함)
-    a.addEventListener('click', function(){ track('download'); document.getElementById('done').textContent = '저장했어요. 다운로드 폴더 또는 갤러리를 확인하세요.'; });
-  }
+  track('tag'); // 페이지 열림 1회
 })();
 </script></body></html>
