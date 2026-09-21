@@ -48,6 +48,21 @@ p{color:var(--sub);font-size:14px;margin:0;line-height:1.55;max-width:320px}
   var IMG = 'images/wallpaper.jpg';
   var FILENAME = 'SLBS-wallpaper.jpg';
 
+  // ── 집계: 접속(tag)/다운로드(download)를 Supabase에 기록 (라이브러리 없이 REST 호출) ──
+  var SB_URL = 'https://lcdpaoiideovebozldjw.supabase.co';
+  var SB_KEY = 'sb_publishable_plKi5-wE7NJ1uqdVRwmMag_GOJF-e56';
+  var SRC = (new URLSearchParams(location.search).get('src') || '').slice(0, 40); // ?src=카드이름 으로 카드 구분
+  function track(kind){
+    try {
+      fetch(SB_URL + '/rest/v1/ggamja_hits', {
+        method: 'POST', keepalive: true,
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kind: kind, src: SRC, ua: (navigator.userAgent || '').slice(0, 300) })
+      }).catch(function(){});
+    } catch(e){}
+  }
+  track('tag'); // 페이지 열림 = 태그 1회
+
   var ua = navigator.userAgent || '';
   var isIOS = /iPhone|iPod|iPad/.test(ua) || (/Macintosh/.test(ua) && (navigator.maxTouchPoints||0) > 1);
   var img = document.getElementById('img'), ph = document.getElementById('ph');
@@ -64,7 +79,7 @@ p{color:var(--sub);font-size:14px;margin:0;line-height:1.55;max-width:320px}
     var a = document.getElementById('dl');
     a.href = IMG; a.setAttribute('download', FILENAME);
     // 버튼을 눌렀을 때만 저장(자동 저장 안 함)
-    a.addEventListener('click', function(){ document.getElementById('done').textContent = '저장했어요. 다운로드 폴더 또는 갤러리를 확인하세요.'; });
+    a.addEventListener('click', function(){ track('download'); document.getElementById('done').textContent = '저장했어요. 다운로드 폴더 또는 갤러리를 확인하세요.'; });
   }
 })();
 </script></body></html>
