@@ -63,11 +63,8 @@ p{color:var(--sub);font-size:14px;margin:0;line-height:1.55;max-width:320px}
     document.getElementById('android').hidden = false;
     var a = document.getElementById('dl');
     a.href = IMG; a.setAttribute('download', FILENAME);
-    // 접속 즉시 한 번 자동 저장 시도(브라우저가 막으면 버튼으로)
-    var tried = false;
-    function autodl(){ if (tried) return; tried = true; try { var t = document.createElement('a'); t.href = IMG; t.download = FILENAME; document.body.appendChild(t); t.click(); t.remove(); document.getElementById('done').textContent = '저장을 시작했어요. 안 되면 위 버튼을 누르세요.'; } catch(e){} }
-    img.addEventListener('load', function(){ setTimeout(autodl, 400); });
-    a.addEventListener('click', function(){ document.getElementById('done').textContent = '저장 폴더를 확인하세요.'; });
+    // 버튼을 눌렀을 때만 저장(자동 저장 안 함)
+    a.addEventListener('click', function(){ document.getElementById('done').textContent = '저장했어요. 다운로드 폴더 또는 갤러리를 확인하세요.'; });
   }
 })();
 </script></body></html>
