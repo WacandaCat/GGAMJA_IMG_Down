@@ -1,3 +1,5 @@
+import { assertAllowed } from './_guard.js';
+
 function sanitizeFilename(name = 'download.bin') {
   return String(name).replace(/[^a-zA-Z0-9._-]/g, '-');
 }
@@ -21,9 +23,9 @@ export default async function handler(req, res) {
   try {
     const url = String(req.query?.url || '');
     const filename = sanitizeFilename(req.query?.filename || 'download.bin');
-    if (!/^https?:\/\//i.test(url)) return res.status(400).send('Invalid URL');
+    try { assertAllowed(url); } catch (e) { return res.status(400).send(e.message); }
 
-    const response = await fetch(url);
+    const response = await fetch(url, { redirect: 'error' });
     if (!response.ok) return res.status(502).send(`Failed to fetch source file: ${response.status}`);
 
     const buffer = Buffer.from(await response.arrayBuffer());

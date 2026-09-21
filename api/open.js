@@ -1,3 +1,5 @@
+import { assertAllowed } from './_guard.js';
+
 function inferContentType(url, fallback = 'application/octet-stream') {
   const lower = url.toLowerCase();
   if (lower.endsWith('.png')) return 'image/png';
@@ -16,9 +18,9 @@ export default async function handler(req, res) {
 
   try {
     const url = String(req.query?.url || '');
-    if (!/^https?:\/\//i.test(url)) return res.status(400).send('Invalid URL');
+    try { assertAllowed(url); } catch (e) { return res.status(400).send(e.message); }
 
-    const response = await fetch(url);
+    const response = await fetch(url, { redirect: 'error' });
     if (!response.ok) return res.status(502).send(`Failed to open source file: ${response.status}`);
 
     const buffer = Buffer.from(await response.arrayBuffer());
